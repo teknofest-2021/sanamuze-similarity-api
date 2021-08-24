@@ -50,6 +50,6 @@ Provide name of Image to get Base64 Format.
 
 **Code** : `404 FAILED`
 
-**Headers** : `Location: http://194.31.79.154/api/similarity/getImageBase64FromQR`
+**Headers** : `Location: http://194.31.79.154:6065/api/similarity/getImageBase64FromQR`
 
 **Content** : `{"compareImageName" : "randomName.jpg","imageBase64" : "123?3/9j/4AAQSkZJRgABAQAAAQABAAD/...."}`

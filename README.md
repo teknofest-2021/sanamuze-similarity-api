@@ -4,7 +4,7 @@ This repostory is about [SanAmuze Similarity Rate](https://github.com/teknofest-
 JSON responses.
 
 Where full URLs are provided in responses they will be rendered as if service
-is running on 'http://194.31.79.154/'.
+is running on 'http://194.31.79.154:6065/'.
 
 ## Open Endpoints
 

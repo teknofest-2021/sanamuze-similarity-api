@@ -37,6 +37,6 @@ Get image list(name, prefix, base64Format) from server
 
 **Code** : `404 FAILED`
 
-**Headers** : `Location: http://194.31.79.154/api/similarity/getImageList`
+**Headers** : `Location: http://194.31.79.154:6065/api/similarity/getImageList`
 
 **Content** : `{}`
