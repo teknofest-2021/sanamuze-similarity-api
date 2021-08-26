@@ -28,7 +28,7 @@ def getImageList():
             imageList.append(dict)
     return jsonify(imageList)
 
-@app.route('/api/similar/getImageBase64FromQR', methods=['POST'])
+@app.route('/api/similarity/getImageBase64FromQR', methods=['POST'])
 def getImageBase64FromQR():
     print('[INFO]--[getImageBase64FromQR]--[FUNCTION]')
     imageName = request.form['imageName']
@@ -37,7 +37,7 @@ def getImageBase64FromQR():
     imageBase64 = imageBase64.decode()
     return jsonify({'imageBase64':imageBase64})
 
-@app.route('/api/similar/getSimilaritiyRateFromImage', methods=['POST'])
+@app.route('/api/similarity/getSimilaritiyRateFromImage', methods=['POST'])
 def getSimilaritiyRateFromImage():
     print('[INFO]--[getSimilaritiyRateFromImage]--[FUNCTION]')
     imageName = request.form['compareImageName']
