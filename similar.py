@@ -1,7 +1,7 @@
 import cv2 as cv
 
 def findSimilarity(orjinal_img_path, referans_img_path, method):
-    src_base = cv.imread('imageList\\'+orjinal_img_path)
+    src_base = cv.imread('./imageList/'+orjinal_img_path)
 
     hsv_base = cv.cvtColor(src_base, cv.COLOR_BGR2HSV)
     hsv_test1 = cv.cvtColor(referans_img_path, cv.COLOR_BGR2HSV)
