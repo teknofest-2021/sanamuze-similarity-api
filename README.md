@@ -32,7 +32,6 @@ Each endpoint manipulates or displays information related to the image which pro
 ## Authors
 
 * **Fehmi Şener** - [Github](https://github.com/fehmiisener)
-* **Ramazan Kaan Yarayan** - [Github](https://github.com/rknyryn)
 
 See also the list of [contributors](https://github.com/teknofest-2021/similarity-rate-api/contributors) who participated in this project.
 
