@@ -42,12 +42,11 @@ def getSimilaritiyRateFromImage():
     print('[INFO]--[getSimilaritiyRateFromImage]--[FUNCTION]')
     imageName = request.form['compareImageName']
     imageString = request.form['imageBase64']
-
-    imageData = base64.b64decode(str(imageString))
-    compareImage = Image.open(io.BytesIO(imageData))
-
-    similarityRate = findSimilarity(imageName, np.array(compareImage), 0)
-    similarityRate = str(similarityRate*100)
+    imageData = base64.b64decode(imageString)
+    filename = 'compareImage.jpg'  
+    with open(filename, 'wb') as f:
+        f.write(imageData)
+    similarityRate = findSimilarity(imageName, filename)
     return jsonify({'similarityRate':similarityRate})
 
 @app.route('/api/test/getTest', methods=['GET'])

@@ -1,29 +1,40 @@
-import cv2 as cv
+import cv2
+import numpy as np
+from PIL import Image
+import os
 
-def findSimilarity(orjinal_img_path, referans_img_path, method):
-    src_base = cv.imread('./imageList/'+orjinal_img_path)
 
-    hsv_base = cv.cvtColor(src_base, cv.COLOR_BGR2HSV)
-    hsv_test1 = cv.cvtColor(referans_img_path, cv.COLOR_BGR2HSV)
+def classify_hist_with_split(image1, image2, size=(256, 256)):
+    image1 = cv2.resize(image1, size)
+    image2 = cv2.resize(image2, size)
+    sub_image1 = cv2.split(image1)
+    sub_image2 = cv2.split(image2)
+    sub_data = 0
+    for im1, im2 in zip(sub_image1, sub_image2):
+        sub_data += calculate(im1, im2)
+    sub_data = sub_data / 3
+    return sub_data
+def calculate(image1, image2):
+    hist1 = cv2.calcHist([image1], [0], None, [256], [0.0, 255.0])
+    hist2 = cv2.calcHist([image2], [0], None, [256], [0.0, 255.0])
+    degree = 0
+    for i in range(len(hist1)):
+        if hist1[i] != hist2[i]:
+            degree = degree + (1 - abs(hist1[i] - hist2[i]) / max(hist1[i], hist2[i]))
+        else:
+            degree = degree + 1
+    degree = degree / len(hist1)
+    return degree
+   
 
-    h_bins = 50
-    s_bins = 60
-    histSize = [h_bins, s_bins]
-
-    h_ranges = [0, 180]
-    s_ranges = [0, 256]
-    ranges = h_ranges + s_ranges
-
-    channels = [0, 1]
-    hist_base = cv.calcHist([hsv_base], channels, None,
-                            histSize, ranges, accumulate=False)
-    cv.normalize(hist_base, hist_base, alpha=0,
-                 beta=1, norm_type=cv.NORM_MINMAX)
-
-    hist_test1 = cv.calcHist([hsv_test1], channels,
-                             None, histSize, ranges, accumulate=False)
-    cv.normalize(hist_test1, hist_test1, alpha=0,
-                 beta=1, norm_type=cv.NORM_MINMAX)
-
-    base_test1 = cv.compareHist(hist_base, hist_test1, method)
-    return base_test1
+def findSimilarity(orjinal_img_path, referans_img_path):
+    img1 = cv2.imread('./imageList/'+orjinal_img_path)
+    img2 = cv2.imread('./'+referans_img_path)
+    threeHist = classify_hist_with_split(img1, img2) 
+    try:
+    
+        compareResult = int(round(threeHist[0]*100,1))
+    except:
+        compareResult = 100
+    os.remove("./"+referans_img_path)
+    return compareResult
