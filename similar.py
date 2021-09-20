@@ -3,38 +3,39 @@ import numpy as np
 from PIL import Image
 import os
 
+def aHash(img,shape=(10,10)):
+    img = cv2.resize(img, shape)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    s = 0
+    hash_str = ''
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            s = s + gray[i, j]
+    avg = s / 100
+    for i in range(shape[0]):
+        for j in range(shape[1]):
+            if gray[i, j] > avg:
+                hash_str = hash_str + '1'
+            else:
+                hash_str = hash_str + '0'
+    return hash_str
 
-def classify_hist_with_split(image1, image2, size=(256, 256)):
-    image1 = cv2.resize(image1, size)
-    image2 = cv2.resize(image2, size)
-    sub_image1 = cv2.split(image1)
-    sub_image2 = cv2.split(image2)
-    sub_data = 0
-    for im1, im2 in zip(sub_image1, sub_image2):
-        sub_data += calculate(im1, im2)
-    sub_data = sub_data / 3
-    return sub_data
-def calculate(image1, image2):
-    hist1 = cv2.calcHist([image1], [0], None, [256], [0.0, 255.0])
-    hist2 = cv2.calcHist([image2], [0], None, [256], [0.0, 255.0])
-    degree = 0
-    for i in range(len(hist1)):
-        if hist1[i] != hist2[i]:
-            degree = degree + (1 - abs(hist1[i] - hist2[i]) / max(hist1[i], hist2[i]))
-        else:
-            degree = degree + 1
-    degree = degree / len(hist1)
-    return degree
+def cmpHash(hash1, hash2,shape=(10,10)):
+    n = 0
+    if len(hash1)!=len(hash2):
+        return -1
+    for i in range(len(hash1)):
+        if hash1[i] == hash2[i]:
+            n = n + 1
+    return n/(shape[0]*shape[1])
    
 
 def findSimilarity(orjinal_img_path, referans_img_path):
     img1 = cv2.imread('./imageList/'+orjinal_img_path)
     img2 = cv2.imread('./'+referans_img_path)
-    threeHist = classify_hist_with_split(img1, img2) 
-    try:
-    
-        compareResult = int(round(threeHist[0]*100,1))
-    except:
-        compareResult = 100
+    hash1 = aHash(img1)
+    hash2 = aHash(img2)
+    n = cmpHash(hash1, hash2)
+    n = n*100
     os.remove("./"+referans_img_path)
-    return compareResult
+    return n
